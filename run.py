@@ -21,15 +21,16 @@ async def start():
         else:
             print("[!] InternetAccess function not found in module.")
     elif args.option == "scode":
-        # Based on your attributes, scode might be related to RuijieLoginManager or VoucherCode
         if hasattr(free, "VoucherCode"):
-            scode = free.VoucherCode()
-            await scode.main()
-        elif hasattr(free, "RuijieLoginManager"):
-            manager = free.RuijieLoginManager()
-            await manager.main()
+            # Nan-Taw pattern for VoucherCode(mode, length, tasks, speed, debug, digit_length, ascii_length, digit_length_type, ascii_length_type, length, arrange)
+            # Providing default values as seen in typical Nan-Taw usage
+            try:
+                scode = free.VoucherCode("all", 6, 100, 10, False, 3, 3, int, str, 6, "random")
+                await scode.execute_all()
+            except Exception as e:
+                print(f"[!] Error running scode: {e}")
         else:
-            print("[!] Scode related function not found in module.")
+            print("[!] VoucherCode function not found in module.")
     else:
         if hasattr(free, "start_tool"):
             free.start_tool()
