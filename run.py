@@ -22,11 +22,26 @@ async def start():
             print("[!] InternetAccess function not found in module.")
     elif args.option == "scode":
         if hasattr(free, "VoucherCode"):
-            # Nan-Taw pattern for VoucherCode(mode, length, tasks, speed, debug, digit_length, ascii_length, digit_length_type, ascii_length_type, length, arrange)
-            # Providing default values as seen in typical Nan-Taw usage
+            print("[*] Starting Scode...")
             try:
+                # Attempt 1: With arguments (Nan-Taw style)
                 scode = free.VoucherCode("all", 6, 100, 10, False, 3, 3, int, str, 6, "random")
-                await scode.execute_all()
+                if hasattr(scode, "execute_all"):
+                    await scode.execute_all()
+                elif hasattr(scode, "main"):
+                    await scode.main()
+                else:
+                    print("[!] No execute function found in VoucherCode.")
+            except TypeError:
+                try:
+                    # Attempt 2: Without arguments
+                    scode = free.VoucherCode()
+                    if hasattr(scode, "main"):
+                        await scode.main()
+                    else:
+                        print("[!] No main function found in VoucherCode.")
+                except Exception as e:
+                    print(f"[!] Error running scode (no args): {e}")
             except Exception as e:
                 print(f"[!] Error running scode: {e}")
         else:
