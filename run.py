@@ -21,28 +21,15 @@ async def start():
         else:
             print("[!] InternetAccess function not found in module.")
     elif args.option == "scode":
-        if hasattr(free, "VoucherCode"):
-            print("[*] Starting Scode...")
-            try:
-                # Based on original run.py: is_free_user, mode, length, speed, tasks, debug, digit_length, ascii_length, digit_length_type, ascii_length_type, arrange
-                scode = free.VoucherCode(True, "all", 6, 10, 100, False, 3, 3, int, str, "random")
-                if hasattr(scode, "execute_all"):
-                    await scode.execute_all()
-                elif hasattr(scode, "main"):
-                    await scode.main()
-                else:
-                    # Fallback to try execute_digit or execute_ascii
-                    if hasattr(scode, "execute_digit"):
-                        await scode.execute_digit()
-                    else:
-                        print("[!] No execute function found in VoucherCode.")
-            except Exception as e:
-                print(f"[!] Error running scode: {e}")
-        else:
-            print("[!] VoucherCode function not found in module.")
-    else:
         if hasattr(free, "start_tool"):
-            free.start_tool()
+            # scode in original run.py calls start_tool() for manual voucher entry
+            await free.start_tool()
+        else:
+            print("[!] start_tool function (scode logic) not found in module.")
+    else:
+        # Default behavior if no option provided
+        if hasattr(free, "start_tool"):
+            await free.start_tool()
         else:
             print("[*] No option provided. Use -o setup, -o internet or -o scode")
 
