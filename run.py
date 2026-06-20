@@ -24,24 +24,18 @@ async def start():
         if hasattr(free, "VoucherCode"):
             print("[*] Starting Scode...")
             try:
-                # Attempt 1: With arguments (Nan-Taw style)
-                scode = free.VoucherCode("all", 6, 100, 10, False, 3, 3, int, str, 6, "random")
+                # Based on original run.py: is_free_user, mode, length, speed, tasks, debug, digit_length, ascii_length, digit_length_type, ascii_length_type, arrange
+                scode = free.VoucherCode(True, "all", 6, 10, 100, False, 3, 3, int, str, "random")
                 if hasattr(scode, "execute_all"):
                     await scode.execute_all()
                 elif hasattr(scode, "main"):
                     await scode.main()
                 else:
-                    print("[!] No execute function found in VoucherCode.")
-            except TypeError:
-                try:
-                    # Attempt 2: Without arguments
-                    scode = free.VoucherCode()
-                    if hasattr(scode, "main"):
-                        await scode.main()
+                    # Fallback to try execute_digit or execute_ascii
+                    if hasattr(scode, "execute_digit"):
+                        await scode.execute_digit()
                     else:
-                        print("[!] No main function found in VoucherCode.")
-                except Exception as e:
-                    print(f"[!] Error running scode (no args): {e}")
+                        print("[!] No execute function found in VoucherCode.")
             except Exception as e:
                 print(f"[!] Error running scode: {e}")
         else:
